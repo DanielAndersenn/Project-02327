@@ -38,7 +38,7 @@ public class MySQLReceptDAO implements ReceptDAO{
 		String sql = "";
 		sql = "INSERT INTO recept(recept_id, recept_navn) VALUES ";
 		sql += "(";
-		sql += recept.getReceptId()  + ", '";
+		sql += "NULL"  + ", '";
 		sql += recept.getReceptNavn() + "')";
 		System.out.println(sql);
 		Connector.doUpdate(sql);

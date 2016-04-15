@@ -17,7 +17,7 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO{
 		ResultSet rs = Connector.doQuery("SELECT * FROM produktbatch WHERE pb_id = "+pbId);
 		try {
 			if(!rs.first()) throw new DALException("Produktbatch med id = "+pbId+" findes ikke.");
-			return new ProduktBatchDTO(rs.getInt("pb_id"), rs.getInt("status"), rs.getInt("ref_recept_id"));
+			return new ProduktBatchDTO(rs.getInt("pb_id"), rs.getInt("status"), rs.getInt("recept_id"));
 		} catch (SQLException e) { throw new DALException(e); }
 	}
 
@@ -27,7 +27,7 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO{
 		ResultSet rs = Connector.doQuery("SELECT * FROM produktbatch");
 		try {
 			while(rs.next()){
-				list.add(new ProduktBatchDTO(rs.getInt("pb_id"), rs.getInt("status"), rs.getInt("ref_recept_id")));
+				list.add(new ProduktBatchDTO(rs.getInt("pb_id"), rs.getInt("status"), rs.getInt("recept_id")));
 			}
 		} catch (SQLException e) { throw new DALException(e); }
 		return list;
@@ -36,14 +36,14 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO{
 	@Override
 	public void createProduktBatch(ProduktBatchDTO produktbatch) throws DALException {
 		//SKAL KUNNE HANDLE AT REF_RECEPT_ID IKKE FØRER HEN TIL KORREKT RECEPT_ID I RECEPT TABLE
-		Connector.doUpdate("INSERT INTO produktbatch(pb_id, status, ref_recept_id) VALUES (" 
-				+ produktbatch.getPbId() + ", " + produktbatch.getStatus() + ", "
+		Connector.doUpdate("INSERT INTO produktbatch(pb_id, status, recept_id) VALUES (" 
+				+ "NULL" + ", " + produktbatch.getStatus() + ", "
 				+ produktbatch.getReceptId() + ")");
 	}
 
 	@Override
 	public void updateProduktBatch(ProduktBatchDTO produktbatch) throws DALException {
 		Connector.doUpdate("UPDATE produktbatch SET status = " + produktbatch.getStatus() 
-				+ ", ref_recept_id = " + produktbatch.getReceptId() + " WHERE pb_id = " + produktbatch.getPbId());
+				+ ", recept_id = " + produktbatch.getReceptId() + " WHERE pb_id = " + produktbatch.getPbId());
 	}
 }

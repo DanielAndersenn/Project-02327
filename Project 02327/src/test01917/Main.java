@@ -11,6 +11,7 @@ import connector01917.Connector;
 public class Main {
 	public static void main(String[] args) {
 		//testOperatoerDTO();
+		testProduktBatchKompDTO();
 		
 	}
 	
@@ -64,11 +65,43 @@ public class Main {
 		catch (ClassNotFoundException e) { e.printStackTrace(); }
 		catch (SQLException e) { e.printStackTrace(); }
 		
+		System.out.println("Produktbatchkomponent med ref_pb_id = 1 og ref_rb_id = 1");
+		MySQLProduktBatchKompDAO pbk = new MySQLProduktBatchKompDAO();
+		try
+		{
+			System.out.println(pbk.getProduktBatchKomp(1, 1));
+		} catch(DALException e)
+			{
+			System.out.println(e.getMessage());
+			}
 		
+		System.out.println("Indsættelse af ny Produktbatchkomponent");
+		try
+		{
+			ProduktBatchKompDTO test = new ProduktBatchKompDTO(5, 2, 10.2, 3.2, 1);
+			pbk.createProduktBatchKomp(test);
+		} catch(DALException e)
+			{
+			System.out.println(e.getMessage());
+			}
 		
+		System.out.println("Printer all produktbatchkomponenter med ref_pb_id = 1:");
+		try
+		{
+			System.out.println(pbk.getProduktBatchKompList(1));
+		} catch(DALException e)
+			{
+			System.out.println(e.getMessage());
+			}
 		
-		
-		
+		System.out.println("Printer all produktbatchkomponenter:");
+		try
+		{
+			System.out.println(pbk.getProduktBatchKompList());
+		} catch(DALException e)
+			{
+			System.out.println(e.getMessage());
+			}
 		
 	}
 
