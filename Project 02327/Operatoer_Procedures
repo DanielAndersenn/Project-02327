@@ -1,0 +1,34 @@
+CREATE PROCEDURE InsertOperatoer(	IN oprNavn TEXT, 
+									IN Initials TEXT,
+									IN CprNr TEXT, 
+									IN Password TEXT)
+BEGIN
+INSERT INTO operatoer(opr_navn, ini, cpr, password)
+VALUES 				(oprNavn, Initials, CprNr, Password);
+END;
+
+CREATE PROCEDURE UpdateOperatoer( 	IN oprId INT(11),
+									IN oprNavn TEXT,
+									IN Initials TEXT,
+									IN CprNr TEXT,
+									IN Password TEXT)
+BEGIN
+UPDATE operatoer SET 	opr_navn = oprNavn,
+						ini		 = Initials,
+						cpr		 = CprNr,
+						password = Password
+WHERE opr_id = oprId;
+END;
+
+CREATE PROCEDURE DeleteOperatoer(	IN oprId INT(11))
+BEGIN
+	DELETE FROM operatoer WHERE opr_id = oprId;
+END;
+
+CALL InsertOperatoer('Batmain', 'BM', '000000-0000', 'hejrobin123');
+
+CALL UpdateOperatoer(5, 'Batmain 2.0', 'BM', '000000-0000', 'hejrobin123');
+
+CALL DeleteOperatoer(5);
+
+SELECT * FROM operatoer;
