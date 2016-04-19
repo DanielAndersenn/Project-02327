@@ -1,0 +1,41 @@
+DROP PROCEDURE IF EXISTS InsertRaavare;
+
+CREATE PROCEDURE InsertRaavare(		IN vRaavareNavn TEXT, 
+									IN vLeverandoer TEXT
+									)
+BEGIN
+INSERT INTO raavare(raavare_navn, leverandoer)
+VALUES 				(vRaavareNavn, vLeverandoer);
+END;
+
+
+DROP PROCEDURE IF EXISTS UpdateRaavare;
+
+CREATE PROCEDURE UpdateRaavare( 	IN vRaavareId INT(11),
+									IN vRaavareNavn TEXT,
+									IN vLeverandoer TEXT
+									)
+BEGIN
+UPDATE raavare SET	 	raavare_navn = vRaavareNavn,
+						leverandoer  = vLeverandoer
+						
+WHERE raavare_id = vRaavareId;
+END;
+
+
+DROP PROCEDURE IF EXISTS DeleteRaavare;
+
+CREATE PROCEDURE DeleteRaavare(	IN vRaavareId INT(11))
+BEGIN
+	DELETE FROM raavare WHERE raavare_id = vRaavareId;
+END;
+
+CALL InsertRaavare('laks', 'Varde Laksen A/S');
+
+CALL UpdateRaavare(9, 'tun', 'Varde Laksen A/S');
+
+CALL DeleteRaavare(9);
+
+SELECT * FROM raavare;
+
+

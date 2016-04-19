@@ -1,34 +1,66 @@
-CREATE PROCEDURE InsertOperatoer(	IN oprNavn TEXT, 
-									IN Initials TEXT,
-									IN CprNr TEXT, 
-									IN Password TEXT)
+DROP PROCEDURE IF EXISTS InsertOperatoer;
+DELIMITER $$
+CREATE PROCEDURE InsertOperatoer(	IN vOprNavn TEXT, 
+									IN vInitials TEXT,
+									IN vCprNr TEXT, 
+									IN vPassword TEXT
+									)
+LANGUAGE SQL
+DETERMINISTIC
+SQL SECURITY DEFINER
+COMMENT 'Kom nu mand'
 BEGIN
+	
+	DECLARE exit handler for sqlexception
+	BEGIN
+	-- Error
+	ROLLBACK;
+	END;
+	
+	DECLARE exit handler for sqlwarning
+	BEGIN
+		-- Warning
+	END;
+	
+START TRANSACTION;
+	
 INSERT INTO operatoer(opr_navn, ini, cpr, password)
-VALUES 				(oprNavn, Initials, CprNr, Password);
+VALUES 				(vOprNavn, vInitials, vCprNr, vPassword);
+
+COMMIT;
+
+END;	
+$$
+
+DROP PROCEDURE IF EXISTS UpdateOperatoer;
+
+CREATE PROCEDURE UpdateOperatoer( 	IN vOprId INT(11),
+									IN vOprNavn TEXT,
+									IN vInitials TEXT,
+									IN vCprNr TEXT,
+									IN vPassword TEXT)
+BEGIN
+UPDATE operatoer SET 	opr_navn = vOprNavn,
+						ini		 = vInitials,
+						cpr		 = vCprNr,
+						password = vPassword
+WHERE opr_id = vOprId;
 END;
 
-CREATE PROCEDURE UpdateOperatoer( 	IN oprId INT(11),
-									IN oprNavn TEXT,
-									IN Initials TEXT,
-									IN CprNr TEXT,
-									IN Password TEXT)
-BEGIN
-UPDATE operatoer SET 	opr_navn = oprNavn,
-						ini		 = Initials,
-						cpr		 = CprNr,
-						password = Password
-WHERE opr_id = oprId;
-END;
 
-CREATE PROCEDURE DeleteOperatoer(	IN oprId INT(11))
+DROP PROCEDURE IF EXISTS DeleteOperatoer;
+
+CREATE PROCEDURE DeleteOperatoer(	IN vOprId INT(11))
 BEGIN
-	DELETE FROM operatoer WHERE opr_id = oprId;
+	DELETE FROM operatoer WHERE opr_id = vOprId;
 END;
 
 CALL InsertOperatoer('Batmain', 'BM', '000000-0000', 'hejrobin123');
 
-CALL UpdateOperatoer(5, 'Batmain 2.0', 'BM', '000000-0000', 'hejrobin123');
+CALL UpdateOperatoer(5, 'Batmain 3.0', 'BM', '000000-0000', 'hejrobin321');
 
-CALL DeleteOperatoer(5);
+CALL DeleteOperatoer(4);
 
 SELECT * FROM operatoer;
+
+
