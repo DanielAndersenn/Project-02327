@@ -1,0 +1,90 @@
+-- Opgave 1
+SELECT raavare_navn, raavare_id 
+FROM raavarebatch rb 
+NATURAL JOIN raavare 
+WHERE rb.raavare_id IN (SELECT DISTINCT rb2.raavare_id FROM raavarebatch rb2 GROUP BY rb2.raavare_id HAVING count(*) > 1);
+
+-- Opgave 2
+SELECT rk.recept_id ReceptID, rc.recept_navn ReceptNavn, rv.raavare_navn RaavareNavn 
+FROM receptkomponent rk, raavare rv, recept rc 
+WHERE rv.raavare_id = rk.raavare_id
+AND rc.recept_id = rk.recept_id;
+
+-- Opgave 3.1
+SELECT DISTINCT rc.recept_navn
+FROM recept rc, receptkomponent rk, raavare rv
+WHERE rc.recept_id IN (SELECT rk.recept_id FROM receptkomponent WHERE rk.raavare_id IN (SELECT rv.raavare_id FROM raavare where rv.raavare_navn = 'skinke' 
+OR rv.raavare_navn = 'champignon'));
+
+
+-- Opgave 3.2
+SELECT recept_navn FROM receptkomponent rk1 NATURAL JOIN raavare NATURAL JOIN recept
+WHERE raavare_navn = 'champignon'
+AND EXISTS (SELECT * FROM receptkomponent rk2 NATURAL JOIN raavare WHERE rk1.recept_id = rk2.recept_id AND raavare_navn = 'skinke');
+
+-- Opgave 4
+SELECT recept_navn FROM recept WHERE recept_id NOT IN
+(SELECT DISTINCT ref_recept_id FROM receptkomponent WHERE ref_raavare_id IN 
+(SELECT raavare_id FROM raavare WHERE raavare_navn = "champignon"));
+
+-- Opgave 5
+SELECT rc.recept_navn, rk.nom_netto
+FROM recept rc, receptkomponent rk, raavare rv
+WHERE rc.recept_id IN (SELECT rk.recept_id FROM receptkomponent WHERE rk.raavare_id IN (SELECT rv.raavare_id FROM raavare where rv.raavare_navn = 'tomat')) 
+AND rk.nom_netto >= (SELECT MAX(nom_netto) FROM receptkomponent WHERE raavare_id IN (SELECT raavare_id FROM raavare where raavare_navn = 'tomat'));
+ 
+-- Opgave 6
+SELECT pbk.pb_id ProduktBatchID, rv.raavare_navn RaavareNavn, pbk.netto NettoVaegt 
+FROM raavare rv, raavarebatch rb, produktbatchkomponent pbk 
+WHERE rb.raavare_id = rv.raavare_id 
+AND rb.rb_id = pbk.rb_id;
+
+-- Opgave 7
+SELECT * FROM produktbatch WHERE pb_id IN 
+(SELECT pb_id FROM produktbatchkomponent WHERE rb_id IN 
+(SELECT rb_id FROM raavarebatch WHERE raavare_id IN 
+(SELECT raavare_id FROM raavare WHERE raavare_navn = 'tomat'))
+AND netto >= (SELECT MAX(NETTO) FROM produktbatchkomponent WHERE rb_id IN (SELECT rb_id FROM raavarebatch WHERE raavare_id IN (SELECT raavare_id FROM raavare WHERE raavare_navn = 'tomat'))));
+ 
+-- Opgave 8
+SELECT opr_navn FROM operatoer WHERE opr_id IN 
+(SELECT opr_id FROM produktbatchkomponent WHERE pb_id IN 
+(SELECT pb_id FROM produktbatch WHERE recept_id IN 
+(SELECT recept_id FROM recept WHERE recept_navn = 'margherita')));
+
+-- Opgave 9
+SELECT pbk.pb_id, pb.status, rv.raavare_navn, pbk.netto, rc.recept_navn, opr.opr_navn
+FROM produktbatchkomponent pbk, produktbatch pb, raavarebatch rb, raavare rv, recept rc, operatoer opr
+WHERE pb.pb_id = pbk.pb_id and rb.raavare_id = pbk.rb_id and rv.raavare_id = rb.raavare_id AND rc.recept_id = pb.recept_id AND opr.opr_id = pbk.opr_id;
+
+
+-- Opgave Q1
+SELECT COUNT(*) FROM produktbatchkomponent WHERE netto >= 10;
+
+-- Opgave Q2
+SELECT SUM(MAENGDE) FROM raavarebatch WHERE raavare_id IN (SELECT raavare_id FROM raavare WHERE raavare_navn = 'tomat');
+
+-- Opgave Q3
+SELECT rv.raavare_navn, SUM(MAENGDE) FROM raavarebatch rb, raavare rv WHERE rv.raavare_id = rb.raavare_id GROUP BY rv.raavare_navn;
+
+-- Opgave Q4
+SELECT rv.raavare_navn FROM receptkomponent rk, raavare rv WHERE rv.raavare_id = rk.raavare_id GROUP BY rv.raavare_navn HAVING COUNT(rv.raavare_navn) >= 3;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
