@@ -10,8 +10,52 @@ import connector01917.Connector;
 
 public class Main {
 	public static void main(String[] args) {
-		//testOperatoerDTO();
-		testProduktBatchKompDTO();
+		testOperatoerDTO2();
+		//testProduktBatchKompDTO();
+		
+	}
+	
+	public static void testOperatoerDTO2() 
+	{
+		try { new Connector(); } 
+		catch (InstantiationException e) { e.printStackTrace(); }
+		catch (IllegalAccessException e) { e.printStackTrace(); }
+		catch (ClassNotFoundException e) { e.printStackTrace(); }
+		catch (SQLException e) { e.printStackTrace(); }
+		
+		MySQLOperatoerDAO opr = new MySQLOperatoerDAO();
+		
+		//Indsæt ny operatoer
+		System.out.println("Indsaettelse af ny operatoer");
+		OperatoerDTO oprDTO = new OperatoerDTO(4,"Don Juan","DJ","000000-0000","iloveyou");
+		try { opr.createOperatoer(oprDTO); }
+		catch (DALException e) { System.out.println(e.getMessage()); }
+		
+		//Vis den nyligt indsatte operatoer
+		System.out.println("Operatoer nummer 4:");
+		try { System.out.println(opr.getOperatoer(4)); }
+		catch (DALException e) { System.out.println(e.getMessage()); }
+		
+		//Opdater den nye operatoer
+		System.out.println("Opdatering af initialer for den nye operatoer");
+		oprDTO.setIni("DoJu");
+		try { opr.updateOperatoer(oprDTO); }
+		catch (DALException e) { System.out.println(e.getMessage()); }
+		
+		//Vis alle operatoerer
+		System.out.println("Alle operatoerer:");
+		try { System.out.println(opr.getOperatoerList()); }
+		catch (DALException e) { System.out.println(e.getMessage()); }
+		
+		//Slet den nye operatoer
+		System.out.println("Sletter den nye operatoer");
+		try { opr.deleteOperatoer(oprDTO); }
+		catch (DALException e) { System.out.println(e.getMessage()); }
+		
+		//Vis alle operatoerer, igen
+		System.out.println("Alle operatoerer:");
+		try { System.out.println(opr.getOperatoerList()); }
+		catch (DALException e) { System.out.println(e.getMessage()); }
 		
 	}
 	

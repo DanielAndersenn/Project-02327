@@ -48,5 +48,5 @@ public class OperatoerDTO
 	public void setCpr(String cpr) { this.cpr = cpr; }
 	public String getPassword() { return password; }
 	public void setPassword(String password) { this.password = password; }
-	public String toString() { return oprId + "\t" + oprNavn + "\t" + ini + "\t" + cpr + "\t" + password; }
+	public String toString() { return oprId + "\t" + oprNavn + "\t" + ini + "\t" + cpr + "\t" + password + "\n"; }
 }
