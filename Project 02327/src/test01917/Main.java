@@ -27,7 +27,7 @@ public class Main {
 		
 		//Indsæt ny operatoer
 		System.out.println("Indsaettelse af ny operatoer");
-		OperatoerDTO oprDTO = new OperatoerDTO(4,"Don Juan","DJ","000000-0000","iloveyou");
+		OperatoerDTO oprDTO = new OperatoerDTO("Don Juan","DJ","000000-0000","iloveyou");
 		try { opr.createOperatoer(oprDTO); }
 		catch (DALException e) { System.out.println(e.getMessage()); }
 		
@@ -73,7 +73,7 @@ public class Main {
 		catch (DALException e) { System.out.println(e.getMessage()); }
 		
 		System.out.println("Indsaettelse af ny operatoer med opr_id =  4");
-		OperatoerDTO oprDTO = new OperatoerDTO(4,"Don Juan","DJ","000000-0000","iloveyou");
+		OperatoerDTO oprDTO = new OperatoerDTO("Don Juan","DJ","000000-0000","iloveyou");
 		try { opr.createOperatoer(oprDTO); }
 		catch (DALException e) { System.out.println(e.getMessage()); }	
 		
